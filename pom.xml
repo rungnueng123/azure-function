@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.streamit</groupId>
-    <artifactId>email-from-queue-function</artifactId>
+    <artifactId>scb-azure-function</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -14,7 +14,11 @@
         <java.version>11</java.version>
         <azure.functions.maven.plugin.version>1.21.0</azure.functions.maven.plugin.version>
         <azure.functions.java.library.version>2.0.1</azure.functions.java.library.version>
-        <functionAppName>emailCustomToQueueFnc</functionAppName>
+        <resourceGroup>HFY-Merchant-Portal</resourceGroup>
+        <appServicePlan>scbsmcseaapps001dev</appServicePlan>
+        <functionAppName>smc-email-queue</functionAppName>
+        <region>southeastasia</region>
+        <pricingTier>Y1</pricingTier>
     </properties>
 
     <dependencies>
@@ -54,12 +58,17 @@
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
-			<version>1.5.5</version>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 		  <groupId>com.azure</groupId>
 		  <artifactId>azure-storage-queue</artifactId>
 		  <version>12.0.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.simplejavamail</groupId>
+		    <artifactId>simple-java-mail</artifactId>
+		    <version>7.5.0</version>
 		</dependency>
     </dependencies>
 
@@ -81,21 +90,11 @@
                 <artifactId>azure-functions-maven-plugin</artifactId>
                 <version>${azure.functions.maven.plugin.version}</version>
                 <configuration>
-                    <!-- function app name -->
-                    <appName>${functionAppName}</appName>
-                    <!-- function app resource group -->
-                    <resourceGroup>HFY-Merchant-Portal</resourceGroup>
-                    <!-- function app service plan name -->
-                    <appServicePlanName>java-functions-app-service-plan</appServicePlanName>
-                    <!-- function app region-->
-                    <!-- refers https://github.com/microsoft/azure-maven-plugins/wiki/Azure-Functions:-Configuration-Details#supported-regions for all valid values -->
-                    <region>southeastasia</region>
-                    <!-- function pricingTier, default to be consumption if not specified -->
-                    <!-- refers https://github.com/microsoft/azure-maven-plugins/wiki/Azure-Functions:-Configuration-Details#supported-pricing-tiers for all valid values -->
-                    <!-- <pricingTier></pricingTier> -->
-                    <!-- Whether to disable application insights, default is false -->
-                    <!-- refers https://github.com/microsoft/azure-maven-plugins/wiki/Azure-Functions:-Configuration-Details for all valid configurations for application insights-->
-                    <!-- <disableAppInsights></disableAppInsights> -->
+                	<appName>${functionAppName}</appName>
+                    <resourceGroup>${resourceGroup}</resourceGroup>
+                    <appServicePlanName>${appServicePlan}</appServicePlanName>
+                    <region>${region}</region>
+                    <pricingTier>${pricingTier}</pricingTier>
                     <runtime>
                         <!-- runtime os, could be windows, linux or docker-->
                         <os>windows</os>
@@ -103,8 +102,40 @@
                     </runtime>
                     <appSettings>
                         <property>
+                            <name>AzureWebJobsStorage</name>
+                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
+                        </property>
+                        <property>
+                            <name>AzureWebJobsDashboard</name>
+                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
+                        </property>
+                        <property>
+                            <name>FUNCTIONS_WORKER_RUNTIME</name>
+                            <value>java</value>
+                        </property>
+                        <property>
                             <name>FUNCTIONS_EXTENSION_VERSION</name>
                             <value>~4</value>
+                        </property>
+                        <property>
+                            <name>APPINSIGHTS_INSTRUMENTATIONKEY</name>
+                            <value>996dc04f-0431-454d-8a96-71011df5493f</value>
+                        </property>
+                        <property>
+                            <name>APPLICATIONINSIGHTS_CONNECTION_STRING</name>
+                            <value>InstrumentationKey=996dc04f-0431-454d-8a96-71011df5493f;IngestionEndpoint=https://southeastasia-1.in.applicationinsights.azure.com/;LiveEndpoint=https://southeastasia.livediagnostics.monitor.azure.com/</value>
+                        </property>
+                        <property>
+                            <name>WEBSITE_CONTENTAZUREFILECONNECTIONSTRING</name>
+                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
+                        </property>
+                        <property>
+                            <name>WEBSITE_CONTENTSHARE</name>
+                            <value>merchantportalblob</value>
+                        </property>
+                        <property>
+                            <name>WEBSITE_RUN_FROM_PACKAGE</name>
+                            <value>1</value>
                         </property>
                     </appSettings>
                 </configuration>

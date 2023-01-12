@@ -4,10 +4,12 @@
     "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net",
     "FUNCTIONS_WORKER_RUNTIME": "java",
     "FUNCTIONS_EXTENSION_VERSION": "~4",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "bf678147-c1b2-4905-a0cf-1f29796a1a4c",
-    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=bf678147-c1b2-4905-a0cf-1f29796a1a4c;IngestionEndpoint=https://southeastasia-1.in.applicationinsights.azure.com/;LiveEndpoint=https://southeastasia.livediagnostics.monitor.azure.com/",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "6c8b25c5-546d-4a46-9c83-2d36606cc2f2",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=6c8b25c5-546d-4a46-9c83-2d36606cc2f2;IngestionEndpoint=https://southeastasia-1.in.applicationinsights.azure.com/;LiveEndpoint=https://southeastasia.livediagnostics.monitor.azure.com/",
     "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net",
-    "WEBSITE_CONTENTSHARE": "emailcustomtoqueuefncbe31"
+    "WEBSITE_CONTENTSHARE": "merchantportalblob",
+    "WEBSITE_RUN_FROM_PACKAGE": "1",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net"
   },
   "ConnectionStrings": {}
 }
