@@ -16,7 +16,7 @@
         <azure.functions.java.library.version>2.0.1</azure.functions.java.library.version>
         <resourceGroup>HFY-Merchant-Portal</resourceGroup>
         <appServicePlan>scbsmcseaapps001dev</appServicePlan>
-        <functionAppName>smc-email-queue</functionAppName>
+        <functionAppName>scbsmcseafunc001</functionAppName>
         <region>southeastasia</region>
         <pricingTier>Y1</pricingTier>
     </properties>
@@ -55,20 +55,35 @@
 			<artifactId>gson</artifactId>
 			<version>2.9.1</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		
 		<dependency>
 		  <groupId>com.azure</groupId>
 		  <artifactId>azure-storage-queue</artifactId>
 		  <version>12.0.1</version>
 		</dependency>
+		
 		<dependency>
 		    <groupId>org.simplejavamail</groupId>
 		    <artifactId>simple-java-mail</artifactId>
 		    <version>7.5.0</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>11.2.1.jre11</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.kafka</groupId>
+		    <artifactId>kafka-clients</artifactId>
+		    <version>3.3.1</version>
 		</dependency>
     </dependencies>
 
@@ -96,7 +111,6 @@
                     <region>${region}</region>
                     <pricingTier>${pricingTier}</pricingTier>
                     <runtime>
-                        <!-- runtime os, could be windows, linux or docker-->
                         <os>windows</os>
                         <javaVersion>11</javaVersion>
                     </runtime>

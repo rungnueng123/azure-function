@@ -1,4 +1,4 @@
-package com.streamit;
+package com.streamit.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

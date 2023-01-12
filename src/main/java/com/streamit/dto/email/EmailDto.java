@@ -1,4 +1,4 @@
-package com.streamit;
+package com.streamit.dto.email;
 
 import java.util.List;
 
