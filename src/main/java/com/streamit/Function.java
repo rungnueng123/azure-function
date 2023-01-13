@@ -39,8 +39,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -49,7 +47,6 @@ public class Function {
 	
 	private static final Logger log;
 	private static String USER_NAME = "noreply@waffle.se.scb.co.th";
-	private static String USER_PASSWORD = "P@ssw0rd";
 	
 	static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
@@ -206,17 +203,7 @@ public class Function {
 	    props.put("mail.smtp.host", smtpHostServer);
 	    props.put("mail.smtp.port", smtpHostPort);
 	    props.put("mail.debug", "true");
-	    
-	    props.put("mail.smtp.auth", "true");
-	    props.put("mail.smtp.starttls.enable","true");
-
-	    Authenticator auth = new Authenticator() {
-			//override the getPasswordAuthentication method
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(USER_NAME, USER_PASSWORD);
-			}
-		};
-	    Session session = Session.getInstance(props, auth);
+	    Session session = Session.getInstance(props, null);
 	    session.setDebug(true);
 	    
 	    EmailUtil.sendEmail(USER_NAME, context, session, toEmail, subject, emailBody, attachment);
