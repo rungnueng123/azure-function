@@ -1,9 +1,5 @@
 package com.streamit;
 
-import com.azure.storage.queue.QueueServiceClient;
-import com.azure.storage.queue.QueueServiceClientBuilder;
-import com.azure.storage.queue.models.QueueItem;
-import com.azure.storage.queue.models.QueueStorageException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,13 +10,10 @@ import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
 import com.microsoft.azure.functions.HttpResponseMessage;
 import com.microsoft.azure.functions.HttpStatus;
-import com.microsoft.azure.functions.OutputBinding;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
-import com.microsoft.azure.functions.annotation.QueueOutput;
 import com.microsoft.azure.functions.annotation.QueueTrigger;
-import com.microsoft.azure.functions.annotation.TimerTrigger;
 import com.streamit.config.DataSourceConfig;
 import com.streamit.dto.email.EmailDto;
 import com.streamit.dto.log.InquiryLogDto;
@@ -29,15 +22,10 @@ import com.streamit.dto.log.ResponseBodyDto;
 import com.streamit.producer.ProducerKafka;
 import com.streamit.utils.EmailUtil;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,14 +42,14 @@ import java.util.logging.Logger;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 
 public class Function {
 	
 	private static final Logger log;
+	private static String USER_NAME = "noreply@waffle.se.scb.co.th";
+	private static String USER_PASSWORD = "P@ssw0rd";
 	
 	static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
@@ -72,6 +60,7 @@ public class Function {
     public void QueueTrigger(
     		@QueueTrigger(name = "message", queueName = "emailcustomqueue", connection = "AzureWebJobsStorage") String message,
         final ExecutionContext context) throws IOException {
+		context.getLogger().info("Trigger Queue");
 		String request;
 		Gson gson = new Gson();
 		JsonObject convertedObject = gson.fromJson(message, JsonObject.class);
@@ -80,7 +69,7 @@ public class Function {
 		EmailDto emailDto = null;
 		try {
 			emailDto = objectMapper.readValue(request, EmailDto.class);
-			sendEmail(emailDto);
+			sendEmail(emailDto, context);
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
@@ -204,7 +193,8 @@ public class Function {
         return request.createResponseBuilder(HttpStatus.OK).body(body).build();
     }
 	
-	public void sendEmail(EmailDto emailDto) {		
+	public void sendEmail(EmailDto emailDto, ExecutionContext context) {
+		context.getLogger().info("Send Mail Start");
 	    String smtpHostServer = "waffle.se.scb.co.th";
 	    String smtpHostPort = "25";
 	    String toEmail = emailDto.getToEmail();
@@ -215,10 +205,21 @@ public class Function {
 	    Properties props = System.getProperties();
 	    props.put("mail.smtp.host", smtpHostServer);
 	    props.put("mail.smtp.port", smtpHostPort);
-
-	    Session session = Session.getInstance(props, null);
+	    props.put("mail.debug", "true");
 	    
-	    EmailUtil.sendEmail(session, toEmail, subject, emailBody, attachment);
+	    props.put("mail.smtp.auth", "true");
+	    props.put("mail.smtp.starttls.enable","true");
+
+	    Authenticator auth = new Authenticator() {
+			//override the getPasswordAuthentication method
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(USER_NAME, USER_PASSWORD);
+			}
+		};
+	    Session session = Session.getInstance(props, auth);
+	    session.setDebug(true);
+	    
+	    EmailUtil.sendEmail(USER_NAME, context, session, toEmail, subject, emailBody, attachment);
 	}
 	
 	public Connection getConnectionDb() throws Exception {

@@ -9,12 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.activation.MimetypesFileTypeMap;
 import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -23,15 +20,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-
-import org.simplejavamail.api.email.Email;
-import org.simplejavamail.api.mailer.config.TransportStrategy;
-import org.simplejavamail.email.EmailBuilder;
-import org.simplejavamail.mailer.MailerBuilder;
+import com.microsoft.azure.functions.ExecutionContext;
 
 public class EmailUtil {
 
-	public static void sendEmail(Session session, String toEmail, String subject, String body, List<String> attachment){
+	public static void sendEmail(String userName, ExecutionContext context, Session session, String toEmail, String subject, String body, List<String> attachment){
 		try
 	    {
 	      MimeMessage msg = new MimeMessage(session);
@@ -40,7 +33,7 @@ public class EmailUtil {
 	      msg.addHeader("format", "flowed");
 	      msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-	      msg.setFrom(new InternetAddress("stream@host.com"));
+	      msg.setFrom(new InternetAddress(userName, "noreply"));
 
 	      msg.setReplyTo(InternetAddress.parse(toEmail, false));
 
@@ -69,6 +62,7 @@ public class EmailUtil {
 	    	  msg.setText(body, "UTF-8");
 	      }
     	  Transport.send(msg);
+    	  context.getLogger().info("Send Mail End");
 	    }
 	    catch (Exception e) {
 	    	e.printStackTrace();

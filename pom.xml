@@ -16,7 +16,7 @@
         <azure.functions.java.library.version>2.0.1</azure.functions.java.library.version>
         <resourceGroup>HFY-Merchant-Portal</resourceGroup>
         <appServicePlan>scbsmcseaapps001dev</appServicePlan>
-        <functionAppName>scbsmcseafunc001</functionAppName>
+        <functionAppName>scbsmcseafunc001streamit</functionAppName>
         <region>southeastasia</region>
         <pricingTier>Y1</pricingTier>
     </properties>
@@ -116,40 +116,12 @@
                     </runtime>
                     <appSettings>
                         <property>
-                            <name>AzureWebJobsStorage</name>
-                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
-                        </property>
-                        <property>
-                            <name>AzureWebJobsDashboard</name>
-                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
-                        </property>
-                        <property>
                             <name>FUNCTIONS_WORKER_RUNTIME</name>
                             <value>java</value>
                         </property>
                         <property>
                             <name>FUNCTIONS_EXTENSION_VERSION</name>
                             <value>~4</value>
-                        </property>
-                        <property>
-                            <name>APPINSIGHTS_INSTRUMENTATIONKEY</name>
-                            <value>996dc04f-0431-454d-8a96-71011df5493f</value>
-                        </property>
-                        <property>
-                            <name>APPLICATIONINSIGHTS_CONNECTION_STRING</name>
-                            <value>InstrumentationKey=996dc04f-0431-454d-8a96-71011df5493f;IngestionEndpoint=https://southeastasia-1.in.applicationinsights.azure.com/;LiveEndpoint=https://southeastasia.livediagnostics.monitor.azure.com/</value>
-                        </property>
-                        <property>
-                            <name>WEBSITE_CONTENTAZUREFILECONNECTIONSTRING</name>
-                            <value>DefaultEndpointsProtocol=https;AccountName=merchantportalblob;AccountKey=WfhhJ8zU9OK/vM9GESZ9lpXOzkeOw8Dfs5uGqM4EqVD0Ru2PKKRjB7r0lsZeZh3eHPdiYwUIxE+2+ASt5qjCtA==;EndpointSuffix=core.windows.net</value>
-                        </property>
-                        <property>
-                            <name>WEBSITE_CONTENTSHARE</name>
-                            <value>merchantportalblob</value>
-                        </property>
-                        <property>
-                            <name>WEBSITE_RUN_FROM_PACKAGE</name>
-                            <value>1</value>
                         </property>
                     </appSettings>
                 </configuration>
